@@ -1,6 +1,6 @@
 ---
-title: "Poročilo pri predmetu Analiza podatkov s programom R"
-author: "Študent FMF"
+title: "Transport v in iz Slovenije"
+author: "Lara Vidmar"
 output:
   html_document: default
   pdf_document:
@@ -26,9 +26,9 @@ source("lib/rstudio.r", encoding="UTF-8")
 
 # Izbira teme
 
-Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
+Izbrala sem si temo o transportu. 
+Analizirala bom 4 vrste transporta, ki poteka v Sloveniji. In sicer pristaniški, železniški, cestni in letalski promet. Pri tem bom gledela količino uvoza oz. izvoza tovora in blaga. Pri železniškem in cestnem prometu pa tudi prevožene kilometre. Pri tem bom gledala obdobje od 2010 d0 2018. S tem bomo videli koliko je Slovenija v tem obdobju postala samooskrbna in s tem tudi kakšni so migracijski tokovi pri nas. 
 
-![](slike/grb.png)
 
 ***
 
@@ -38,8 +38,10 @@ Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
 source("uvoz/uvoz.r", encoding="UTF-8")
 ```
 
-Uvozili smo podatke o občinah v obliki CSV s statističnega urada ter v obliki HTML
-z Wikipedije. Podatke imamo v dveh razpredelnicah v obliki *tidy data*.
+Uvozili smo podatke o transportu v obliki CSV s statističnega urada. Podatke imamo v 
+dveh razpredelnicah v obliki *tidy data*.
+Imela bom 8  tabel.
+  
 
 1. `druzine` - podatki o družinah za vsako občino
   - `obcina` - spremenljivka: ime občine (neurejen faktor),
