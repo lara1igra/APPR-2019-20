@@ -25,9 +25,8 @@ source("lib/rstudio.r", encoding="UTF-8")
 ```
 
 # Izbira teme
+Izbrala sem si temo o transportu. Pri tem bom primerjala transport dobrin in ljudi v železniškem, cestnem, pristaniški in letalski promet.Kot prvo se bom osredotočila na uvoz. Želim ugotoviti s katerim prometom pridobimo največ dobrin oziroma kako ljudje najpogosteje prihajajo v našo državo. Potem bom analizirala izvoz dobrin in ljudi, enako kot prej po panogah. Zanimalo me bo spreminjanje transporta glede na časovno obdobje med 2010 in 2018 in s tem tudi kateri transport se je z leti okrepčal. Za konec bom primerjala uvoz in izvoz in s tem želim ugotoviti koliko je Slovenija skozi leta postala samooskrbna država. Transport z vlakom bom primerjala še z drugimi evropskimi državami od leta 2010 do 2018 in podatke prikazala z grafom.
 
-Izbrala sem si temo o transportu. 
-Analizirala bom 4 vrste transporta, ki poteka v Sloveniji. In sicer pristaniški, železniški, cestni in letalski promet. Pri tem bom gledela količino uvoza oz. izvoza tovora in blaga. Pri železniškem in cestnem prometu pa tudi prevožene kilometre. Pri tem bom gledala obdobje od 2010 d0 2018. S tem bomo videli koliko je Slovenija v tem obdobju postala samooskrbna in s tem tudi kakšni so migracijski tokovi pri nas. 
 
 
 ***
