@@ -29,24 +29,19 @@ uvozi.obcine <- function() {
   return(tabela)
 }
 
-# Funkcija, ki uvozi podatke iz datoteke druzine.csv
-uvozi.druzine <- function(obcine) {
-  data <- read_csv2("podatki/druzine.csv", col_names=c("obcina", 1:4),
-                    locale=locale(encoding="CP1250"))
-  data$obcina <- data$obcina %>% strapplyc("^([^/]*)") %>% unlist() %>%
-    strapplyc("([^ ]+)") %>% sapply(paste, collapse=" ") %>% unlist()
-  data$obcina[data$obcina == "Sveti Jurij"] <- "Sveti Jurij ob Ščavnici"
-  data <- data %>% gather(`1`:`4`, key="velikost.druzine", value="stevilo.druzin")
-  data$velikost.druzine <- parse_number(data$velikost.druzine)
-  data$obcina <- parse_factor(data$obcina, levels=obcine)
-  return(data)
-}
+promet <- read_csv2("podatki/2221901.csv", skip=2,
+                    locale=locale(encoding="CP1250")) %>% separate(MESEC, sep="M", c("Leto", "Mesec")) %>%
+    mutate(Leto=parse_number(Leto), Mesec=parse_number(Mesec))
+
+zelezniski_potniski_promet <- read_csv2("podatki/2221702.csv",
+                                        locale=locale(encoding="CP1250")) %>% separate(LETO, sep ='Potniki (1000)', c('Leto', 'Potniki'))
+
 
 # Zapišimo podatke v razpredelnico obcine
-obcine <- uvozi.obcine()
+#obcine <- uvozi.obcine()
 
 # Zapišimo podatke v razpredelnico druzine.
-druzine <- uvozi.druzine(levels(obcine$obcina))
+#druzine <- uvozi.druzine(levels(obcine$obcina))
 
 # Če bi imeli več funkcij za uvoz in nekaterih npr. še ne bi
 # potrebovali v 3. fazi, bi bilo smiselno funkcije dati v svojo
