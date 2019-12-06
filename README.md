@@ -5,10 +5,31 @@ Repozitorij z gradivi pri predmetu APPR v študijskem letu 2019/20
 * [![Shiny](http://mybinder.org/badge.svg)](http://mybinder.org/v2/gh/jaanos/APPR-2019-20/master?urlpath=shiny/APPR-2019-20/projekt.Rmd) Shiny
 * [![RStudio](http://mybinder.org/badge.svg)](http://mybinder.org/v2/gh/jaanos/APPR-2019-20/master?urlpath=rstudio) RStudio
 
-## Tematika
+## Analiza transporta dobrin in ljudi v in iz Slovenije 
 
-Izbrali si boste temo, s katero se bo vaš projekt ukvarjal.
-Tukaj boste napisali, kje ste dobili podatke, ter kakšen je vaš cilj.
+Izbrala sem si temo o transportu. Pri tem bom primerjala transport dobrin in ljudi v železniškem, cestnem, pristaniški in letalski promet.Kot prvo se bom osredotočila na uvoz. Želim ugotoviti s katerim prometom pridobimo največ dobrin oziroma kako ljudje najpogosteje prihajajo v našo državo. Potem bom analizirala izvoz dobrin in ljudi, enako kot prej po panogah. Zanimalo me bo spreminjanje transporta glede na časovno obdobje med 2010 in 2018 in s tem tudi kateri transport se je z leti okrepčal. Za konec bom primerjala uvoz in izvoz, želim ugotoviti koliko je Slovenija skozi leta postala samooskrbna država. Transport z vlakom bom primerjala še z drugimi evropskimi državami od leta 2010 do 2018 in podatke prikazala z grafom. 
+
+Podatke o transportu v in iz Sloveije za vse štiri promete imam v obliki CSV datotek. Za primerjavo s drugimi evropskimi državami pa imam podatke v HTML datoteki. 
+
+TABELE: 
+
+* 1.tabela- Letalski potniški in blagovni promet- čas, prihodni let, odhodni let, potniki, tone (gledali bomo vse države skupaj prav tako redne in posebne lete)
+* 2.tabela - Pristaniški potniški promet - čas, prispeli potniki, odpotovani potniki
+* 3.tabela - Pristaniški blagovni promet - čas, uvoz, izvoz, tone (skupaj gledamo vrsto blaga in vrsto tovora)
+* 4.tabela - Cestni blagovni promet - čas, blago naloženo v Sloveniji, blago razloženo v Sloveniji, tone 
+* 5.tabela - Cestni potniški promet - čas, medkrajevni linijski prevoz, blagovni linijski prevoz, potniki 
+* 6.tabela - Želizniški blagovni promet - čas, blago naloženo v Sloveniji, blago razloženo v Sloveniji, tone 
+* 7.tabela - Železniški potniški promet - čas, potniki vstopili v Slovenijo, potniki izstopili iz Slovenije, potniki  
+* 8.tabela - Evropski železniški blagovni promet - čas, države, tisoč ton 
+* 9.tabela - Evropski železniški potniški promet - čas, države, tisoč potnikov 
+
+ 
+
+VIRI: 
+
+SURS - https://pxweb.stat.si/pxweb/Database/Dem_soc/07_trg_dela/10_place/03_07113_strukt_statistika/03_07113_strukt_statistika.asp
+EUROSTAT - https://appsso.eurostat.ec.europa.eu/nui/submitViewTableAction.do
+
 
 ## Program
 
