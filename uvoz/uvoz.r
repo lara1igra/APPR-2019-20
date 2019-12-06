@@ -34,7 +34,7 @@ promet <- read_csv2("podatki/2221901.csv", skip=2,
     mutate(Leto=parse_number(Leto), Mesec=parse_number(Mesec))
 
 zelezniski_potniski_promet <- read_csv2("podatki/2221702.csv",
-                                        locale=locale(encoding="CP1250")) %>% separate(LETO, sep ='Potniki (1000)', c('Leto', 'Potniki'))
+                                        locale=locale(encoding="CP1250"))
 
 
 # Zapišimo podatke v razpredelnico obcine
