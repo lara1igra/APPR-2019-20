@@ -1,6 +1,9 @@
 # 2. faza: Uvoz podatkov
+library(readr)
+library(dplyr)
+library(tidyr)
 
-sl <- locale("sl", decimal_mark=",", grouping_mark=".")
+#sl <- locale("sl", decimal_mark=",", grouping_mark=".")
 
 # Funkcija, ki uvozi občine iz Wikipedije
 uvozi.obcine <- function() {
@@ -29,12 +32,28 @@ uvozi.obcine <- function() {
   return(tabela)
 }
 
-promet <- read_csv2("podatki/2221901.csv", skip=2,
+#potniki_zelezniski_promet_evropa <- read_html('file:///C:/Users/VidmarL17/Downloads/rail_pa_total.html')
+
+letalski_potniski_in_blagovni_promet <- read_csv2("podatki/letalski_potniški_in_blagovni_promet.csv", skip=2,
                     locale=locale(encoding="CP1250")) %>% separate(MESEC, sep="M", c("Leto", "Mesec")) %>%
     mutate(Leto=parse_number(Leto), Mesec=parse_number(Mesec))
+letalski_potniski_in_blagovni_promet <- letalski_potniski_in_blagovni_promet[,-c(4,5)] 
 
-zelezniski_potniski_promet <- read_csv2("podatki/2221702.csv",
-                                        locale=locale(encoding="CP1250"))
+#zelezniski_potniski_promet <- read_csv2("podatki/2221702.csv",locale=locale(encoding="CP1250"))
+
+zelezniski_potniski_promet <- read_csv2("podatki/zelezniski_potniski_promet.csv", skip = 1, locale=locale(encoding="CP1250")) 
+zelezniski_potniski_promet <- zelezniski_potniski_promet[,-c(4)]
+
+zelezniski_blagovni_promet <- read_csv2('podatki/zelezniski_blagovni_promet.csv', skip= 1,locale=locale(encoding="CP1250"))
+
+
+cestni_blagovni_promet <- read_csv2('podatki/cestni_blagovni_promet.csv', skip= 1,locale=locale(encoding="CP1250"))
+cestni_blagovni_promet <- cestni_blagovni_promet[,-c(4, 5)]
+pristaniski_potniski_promet <- read_csv2 ('podatki/pristaniski_potniski_promet.csv', skip = 1, locale=locale(encoding="CP1250"), na = '0') 
+
+pristaniski_blagovni_promet <- read_csv2('podatki/pristaniski_blagovni_promet.csv', skip = 1, locale = locale(encoding="CP1250"), na = '0')
+
+
 
 
 # Zapišimo podatke v razpredelnico obcine
