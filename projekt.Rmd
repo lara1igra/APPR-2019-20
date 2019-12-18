@@ -25,7 +25,9 @@ source("lib/rstudio.r", encoding="UTF-8")
 ```
 
 # Izbira teme
-Izbrala sem si temo o transportu. Pri tem bom primerjala transport dobrin in ljudi v železniškem, cestnem, pristaniški in letalski promet.Kot prvo se bom osredotočila na uvoz. Želim ugotoviti s katerim prometom pridobimo največ dobrin oziroma kako ljudje najpogosteje prihajajo v našo državo. Potem bom analizirala izvoz dobrin in ljudi, enako kot prej po panogah. Zanimalo me bo spreminjanje transporta glede na časovno obdobje med 2010 in 2018 in s tem tudi kateri transport se je z leti okrepčal. Za konec bom primerjala uvoz in izvoz in s tem želim ugotoviti koliko je Slovenija skozi leta postala samooskrbna država. Transport z vlakom bom primerjala še z drugimi evropskimi državami od leta 2010 do 2018 in podatke prikazala z grafom.
+
+Izbrala sem si temo o transportu. Pri tem bom primerjala transport dobrin in ljudi v železniškem, cestnem, pristaniški in letalski promet.Kot prvo se bom osredotočila na uvoz. Želim ugotoviti s katerim prometom pridobimo največ dobrin oziroma kako ljudje najpogosteje prihajajo v našo državo. Potem bom analizirala izvoz dobrin in ljudi, enako kot prej po panogah. Zanimalo me bo spreminjanje transporta glede na časovno obdobje med 2010 in 2018 in s tem tudi kateri transport se je z leti okrepčal. Za konec bom primerjala uvoz in izvoz, želim ugotoviti koliko je Slovenija skozi leta postala samooskrbna država. Transport z vlakom bom primerjala še z drugimi evropskimi državami od leta 2010 do 2018 in podatke prikazala z grafom. 
+
 
 
 
@@ -38,25 +40,44 @@ source("uvoz/uvoz.r", encoding="UTF-8")
 ```
 
 Uvozili smo podatke o transportu v obliki CSV s statističnega urada. Podatke imamo v 
-dveh razpredelnicah v obliki *tidy data*.
-Imela bom 8  tabel.
+5 razpredelnicah v obliki *tidy data*.
   
+Tabela 1: Letalski potniški in blagovni promet
 
-1. `druzine` - podatki o družinah za vsako občino
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `velikost.druzine` - spremenljivka: število otrok v družini (število: 1, 2, 3 ali 4, kjer zadnja vrednost pomeni 4 ali več),
-  - `stevilo.druzin` - meritev: število družin z ustreznim številom otrok v ustrezni občini (število).
+  - `leto` - spremenljivka: leto (število),
+  - `mesec` - spremenljivka: mesec (število),
+  - `prihod/odhod letal` - spremenljivka: prihod letal in odhod letal iz Slovenije (neurejen faktor),
+  - `potniki` - meritev: stevilo potnikov v 1000 (stevilo),
+  - `tone` - meritev: količina blaga, ki je prišlo v oz. iz Sloveinije v tonah (število).
+  
+Tabela 2: Zeležniški potniški in blagovni promet
 
-2. `obcine` - podatki o občinah
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `povrsina` - meritev: površina občine v km$^2$ (število),
-  - `prebivalci` - meritev: prebivalstvo občine (število),
-  - `gostota` - meritev: število prebivalcev na km$^2$ (število),
-  - `naselja` - meritev: število naselij v občini (število),
-  - `ustanovitev` - meritev: leto ustanovitve občine (število),
-  - `pokrajina` - meritev: pokrajina, ki ji občina pripada (neurejen faktor),
-  - `regija` - meritev: regija, ki ji občina pripada (neurejen faktor),
-  - `odcepitev` - meritev: podatki o občinah, od katerih se je občina odcepila (besedilo).
+  - `leto` - spremenljivka: leto (število),
+  - `transport ` - spremenljivka: uvoz in izvoz blaga in ljudi (neurejen faktor),
+  - `tone` - meritev: količina blaga v tonah (število),
+  - `potniki` - meritev: stevilo potnikov v 1000 (stevilo).
+  
+Tabela 3: Cestni blagovni promet
+
+  - `leto` - spremenljivka: leto (število),
+  - `transport` - spremenljivka: uvoz izvoz blaga in ljudi (neurejen faktor),
+  - `tone` - meritev: količina blaga v tonah (število).
+  
+Tabela 4: Pristaniški potniški in blagovni promet
+
+  - `leto` - spremenljivka: leto (število),
+  - `transport` - spremenljivka: uvoz in izvoz blaga in ljudi (neurejen faktor),
+  - `potniki` - meritev: stevilo potnikov v 1000 (stevilo),
+  - `tone` - meritev: količina blaga v tonah (število).
+
+Tabela 5: Železniški potniški in blagovni promet v primerjavi z drugimi evropskimi državami 
+
+  - `leto` - spremenljivka: leto (število),
+  - `države` - spremenljivka: evropske države (besedilo).
+  - `blago` - meritev: količina blaga v tona (stevilo),
+  - `potniki` - meritev: število potnikov v 1000 (število),
+  
+  
 
 **Opomba**: da bi razpredelnica `obcine` res bila v obliki *tidy data*, bi morali odstraniti stolpec `gostota` (saj je izpeljan iz stolpcev `povrsina` in `prebivalci`), podatke o pokrajinah pa bi morali premakniti v drugo razpredelnico, saj nekatere občine pripadajo dvema pokrajinama. Podobno bi morali narediti tudi s stolpcem `odcepitev`.
 
