@@ -76,6 +76,7 @@ evropski_potniski_promet <- read_csv('podatki/evropa_ljudje.csv' ,  locale=local
 evropski_blagovni_promet <- read_csv('podatki/evropa_dobrine.csv' ,  locale=locale(encoding="CP1250"), na = ':') %>% select('TIME', 'GEO', 'Value') %>% rename(Leto = TIME, Države = GEO, Blago = Value )
 
 evropa_promet <- inner_join(evropski_blagovni_promet, evropski_potniski_promet)
+
 #filter(evropa_promet, Blago != 'NA', Potniki != 'NA' )
 
 # Zapišimo podatke v razpredelnico obcine
