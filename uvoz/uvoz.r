@@ -35,24 +35,22 @@ uvozi.obcine <- function() {
 }
 
 # 1. tabela  
+prevedba6 <- c('Prihod letal' = 'uvoz', 
+               'Odhod letal' = 'izvoz')
+  
+letalski_potniski_in_blagovni_promet <- read_csv2("podatki/letalski_potniški_in_blagovni_promet.csv", skip=4,
+                    locale=locale(encoding="CP1250"),  col_names = c('MESEC', 'tovor', 'prevoz', 'drzave', 'tone', 'potniki')) %>%
+  separate(MESEC, sep="M", c("leto", "mesec")) %>%
+  mutate(leto=parse_number(leto), mesec=parse_number(mesec)) 
 
-letalski_potniski_in_blagovni_promet <- read_csv2("podatki/letalski_potniški_in_blagovni_promet.csv", skip=2,
-                    locale=locale(encoding="CP1250")) %>% separate(MESEC, sep="M", c("Leto", "Mesec")) %>%
-    mutate(Leto=parse_number(Leto), Mesec=parse_number(Mesec))
+letalski_potniski_in_blagovni_promet <- letalski_potniski_in_blagovni_promet[,-c(4,5)] %>% 
+  mutate(tovor = prevedba6[tovor]) %>% 
+  group_by(tovor, leto) %>% summarise(tone = sum(tone), potniki = sum(potniki))
 
-letalski_potniski_in_blagovni_promet <- letalski_potniski_in_blagovni_promet[,-c(4,5)] %>%
-  rename('TRANSPORT' = `PRIHOD/ODHOD LETAL`) 
+letalski_potniski_promet <- letalski_potniski_in_blagovni_promet[, -c(3)] 
+letalski_blagovni_promet <- letalski_potniski_in_blagovni_promet[, -c(4)]
+ 
 
-# ločili uvoz in izvoz ter združili po letih
-
-letalski_promet_uvoz <- filter( letalski_potniski_in_blagovni_promet, TRANSPORT == 'Prihod letal' ) %>%
-  group_by(Leto) %>% summarise(sum(Tone), sum(Potniki)) %>% 
-  rename('Tone' ='sum(Tone)', 'Potniki' = 'sum(Potniki)')
-
-
-letalski_promet_izvoz <- filter( letalski_potniski_in_blagovni_promet, TRANSPORT == 'Odhod letal' ) %>%
-  group_by(Leto) %>% summarise(sum(Tone), sum(Potniki)) %>% 
-  rename('Tone' ='sum(Tone)', 'Potniki' = 'sum(Potniki)')
   
 # 2. tabela 
 
@@ -66,18 +64,13 @@ zelezniski_potniski_promet <- read_csv2("podatki/zelezniski_potniski_promet.csv"
 zelezniski_potniski_promet <- zelezniski_potniski_promet[,-c(4)] %>%
   rename("TRANSPORT" = "NOTRANJI/MEDNARODNI PREVOZ") %>%
   mutate(TRANSPORT=prevedba2[TRANSPORT]) 
-  
-zelezniski_uvoz1 <-  filter(zelezniski_potniski_promet, TRANSPORT == 'uvoz') 
-zelezniski_uvoz2 <-  filter(zelezniski_blagovni_promet, TRANSPORT == 'uvoz')
-zelezniski_uvoz <- inner_join(zelezniski_uvoz1, zelezniski_uvoz2)
-  
-zelezniski_izvoz1 <-  filter(zelezniski_potniski_promet, TRANSPORT == 'izvoz') 
-zelezniski_izvoz2 <-  filter(zelezniski_blagovni_promet, TRANSPORT == 'izvoz')
-zelezniski_izvoz <- inner_join(zelezniski_izvoz1, zelezniski_izvoz2)
 
 zelezniski_blagovni_promet <- read_csv2('podatki/zelezniski_blagovni_promet.csv', skip= 1,locale=locale(encoding="CP1250")) %>%
   rename("TRANSPORT" = "NOTRANJI / MEDNARODNI PREVOZ") %>%
-  mutate(TRANSPORT=prevedba[TRANSPORT])
+  transmute(tovor=prevedba[TRANSPORT],
+         leto = LETO,
+         tone = `Tone (1000)`)
+
 
 
 
@@ -86,9 +79,11 @@ zelezniski_blagovni_promet <- read_csv2('podatki/zelezniski_blagovni_promet.csv'
 prevedba5 <- c('Mednarodni prevoz - blago naloženo v Sloveniji' = 'izvoz',
                'Mednarodni prevoz - blago razloženo v Sloveniji' = 'uvoz')
 
-cestni_blagovni_promet <- read_csv2('podatki/cestni_blagovni_promet.csv', skip= 1,locale=locale(encoding="CP1250"))
+cestni_blagovni_promet <- read_csv2('podatki/cestni_blagovni_promet.csv', skip=2,locale=locale(encoding="CP1250"))
 cestni_blagovni_promet <- cestni_blagovni_promet[,-c(4, 5)] %>% 
-  mutate(`NOTRANJI / MEDNARODNI PREVOZ` = prevedba5[`NOTRANJI / MEDNARODNI PREVOZ`])
+  transmute(tovor = prevedba5[`NOTRANJI / MEDNARODNI PREVOZ`],
+            leto = LETO,
+            tone = `Tone (1000)`)
 
 # 4. tabela
 
@@ -106,9 +101,16 @@ pristaniski_potniski_promet <- read_csv2('podatki/pristaniski_potniski_promet.cs
   arrange(transport)
   
 
-pristaniski_blagovni_promet <- read_csv2('podatki/pristaniski_blagovni_promet.csv', skip = 1, locale = locale(encoding="CP1250"), na = '0') %>%
-  mutate(`RAZLOŽENI IN NALOŽENI TOVOR` = prevedba4[`RAZLOŽENI IN NALOŽENI TOVOR`]) %>%
-  arrange(`RAZLOŽENI IN NALOŽENI TOVOR`)
+pristaniski_blagovni_promet <- read_csv2('podatki/pristaniski_blagovni_promet.csv',
+                                         skip = 3, locale = locale(encoding="CP1250"), na = '0',
+                                         col_names = c("tovor", "leto", "tone")) %>%
+  mutate(tovor = prevedba4[tovor]) %>%
+  arrange(tovor)
+
+blagovni_promet <- rbind(cestni_blagovni_promet %>% mutate(tip="cestni"),
+                         pristaniski_blagovni_promet %>% mutate(tip="pristaniški"),
+                         zelezniski_blagovni_promet %>% mutate(tip='železniški'),
+                         letalski_blagovni_promet %>% mutate(tip = 'letalski'))
 
 #pristaniski <- inner_join(pristaniski_blagovni_promet, pristaniski_potniski_promet)
 
