@@ -47,8 +47,10 @@ letalski_potniski_in_blagovni_promet <- letalski_potniski_in_blagovni_promet[,-c
   mutate(tovor = prevedba6[tovor]) %>% 
   group_by(tovor, leto) %>% summarise(tone = sum(tone), potniki = sum(potniki))
 
-letalski_potniski_promet <- letalski_potniski_in_blagovni_promet[, -c(3)] 
-letalski_blagovni_promet <- letalski_potniski_in_blagovni_promet[, -c(4)]
+letalski_potniski_promet <- letalski_potniski_in_blagovni_promet[, -c(3)] %>%
+  arrange(leto)
+letalski_blagovni_promet <- letalski_potniski_in_blagovni_promet[, -c(4)] %>% 
+  arrange(leto)
  
 
   
@@ -62,8 +64,10 @@ prevedba2 <- c('Mednarodni prevoz - potniki vstopili v Sloveniji' = 'uvoz',
 zelezniski_potniski_promet <- read_csv2("podatki/zelezniski_potniski_promet.csv", skip = 1, locale=locale(encoding="CP1250")) 
 
 zelezniski_potniski_promet <- zelezniski_potniski_promet[,-c(4)] %>%
-  rename("TRANSPORT" = "NOTRANJI/MEDNARODNI PREVOZ") %>%
-  mutate(TRANSPORT=prevedba2[TRANSPORT]) 
+  rename("tovor" = "NOTRANJI/MEDNARODNI PREVOZ") %>%
+  transmute(tovor=prevedba2[tovor],
+            leto = LETO,
+            potniki = `Potniki (1000)`)
 
 zelezniski_blagovni_promet <- read_csv2('podatki/zelezniski_blagovni_promet.csv', skip= 1,locale=locale(encoding="CP1250")) %>%
   rename("TRANSPORT" = "NOTRANJI / MEDNARODNI PREVOZ") %>%
@@ -92,27 +96,30 @@ prevedba4 <- c('Razloženi tovor, uvoz' = 'uvoz','Naloženi tovor, izvoz' = 'izv
 
 pristaniski_potniski_promet <- read_csv2('podatki/pristaniski_potniski_promet.csv',
                                          skip = 1, locale=locale(encoding="CP1250"), na = '0') %>%
-  rename(transport=`PROMET POTNIKOV`) %>%
-  gather(key="leto.mesec", value="stevilo", -transport) %>%
+  rename(tovor=`PROMET POTNIKOV`) %>%
+  gather(key="leto.mesec", value="stevilo", -tovor) %>%
   separate(leto.mesec, c("leto", "mesec"), "M") %>%
   mutate(leto=parse_number(leto), mesec=parse_number(mesec)) %>%
-  group_by(leto, transport) %>% summarise(Potniki = sum(stevilo)) %>%
-  mutate(transport = prevedba3[transport]) %>%
-  arrange(transport)
+  group_by(leto, tovor) %>% summarise(Potniki = sum(stevilo)) %>%
+  transmute(tovor = prevedba3[tovor],
+            potniki = Potniki) %>%
+  arrange(tovor)
   
 
 pristaniski_blagovni_promet <- read_csv2('podatki/pristaniski_blagovni_promet.csv',
                                          skip = 3, locale = locale(encoding="CP1250"), na = '0',
                                          col_names = c("tovor", "leto", "tone")) %>%
   mutate(tovor = prevedba4[tovor]) %>%
-  arrange(tovor)
+  arrange(leto)
 
 blagovni_promet <- rbind(cestni_blagovni_promet %>% mutate(tip="cestni"),
                          pristaniski_blagovni_promet %>% mutate(tip="pristaniški"),
                          zelezniski_blagovni_promet %>% mutate(tip='železniški'),
                          letalski_blagovni_promet %>% mutate(tip = 'letalski'))
 
-#pristaniski <- inner_join(pristaniski_blagovni_promet, pristaniski_potniski_promet)
+potniski_promet <- rbind(pristaniski_potniski_promet %>% mutate(tip = 'pristaniški'),
+                         letalski_potniski_promet %>% mutate(tip= 'letalski'),
+                         zelezniski_potniski_promet %>% mutate(tip= 'zelezniski'))
 
   
 # 5. tabela 
@@ -131,6 +138,8 @@ evropski_blagovni_promet <- read_csv('podatki/evropa_dobrine.csv' ,  locale=loca
 
 evropa_promet <- inner_join(evropski_blagovni_promet, evropski_potniski_promet) 
 evropa_promet <- na.omit(evropa_promet)
+
+
 # Zapišimo podatke v razpredelnico obcine
 #obcine <- uvozi.obcine()
 

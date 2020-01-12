@@ -4,8 +4,15 @@ library(ggplot2)
 library(dplyr)
 library(tmap)
 library(rgdal)
+library(tidyr)
 library(rgeos)
 library(ggpubr)
+library(digest)
+library(mosaic)
+library(maptools)
+
+
+
 
 
 
@@ -46,10 +53,6 @@ graf_evropa <- ggarrange(graf_evropa_blago, graf_evropa_potniki)
 
 # linijski grafi za UVOZ BLAGA
 
-graf_let_uvoz_blaga <- ggplot(data = letalski_promet_uvoz, mapping = aes(x= Leto, y = Tone))+
-  geom_line(stat = 'identity', col ='red') +
-  ggtitle("Letalski promet uvoz blaga")
-
 
 #cestni_blagovni_promet_uvoz <- filter(cestni_blagovni_promet,`NOTRANJI / MEDNARODNI PREVOZ` == 'uvoz')
 
@@ -60,28 +63,45 @@ graf_let_uvoz_blaga <- ggplot(data = letalski_promet_uvoz, mapping = aes(x= Leto
 
 #graf_zel_uvoz_blaga <- ggplot(data = zelezniski_uvoz, mapping = aes(x=zelezniski_uvoz$LETO , y=zelezniski_uvoz$`Tone (1000)`)) + 
 #  geom_line(stat = 'identity', col= 'blue') +
-#  ggtitle("Železniški promet uvoz blaga")
+#  g("Železniški promet uvoz blaga")gtitle
 
  
 #pristaniski_blagovni_promet <- filter(pristaniski_blagovni_promet, `RAZLOŽENI IN NALOŽENI TOVOR` == 'uvoz') 
 
-graf_pris_uvoz_blago <- ggplot(pristaniski_blagovni_promet %>% filter(tovor == "uvoz"),
-                               aes(x=leto, y=tone))+
-  geom_line(stat = 'identity', col ='yellow') +
-  ggtitle("Pristaniški promet uvoz blaga")
+#graf_pris_uvoz_blago <- ggplot(pristaniski_blagovni_promet %>% filter(tovor == "uvoz"),
+#                               aes(x=leto, y=tone))+
+#  geom_line(stat = 'identity', col ='yellow') +
+#  ggtitle("Pristaniški promet uvoz blaga")
 
-print(graf_pris_uvoz_blago)
 
 
 graf_uvoz_blago <- ggplot(blagovni_promet %>% filter(tovor == "uvoz"),
                           aes(x=leto, y=tone, color=tip)) + geom_line() +
   ggtitle("Uvoz blaga")
-print(graf_uvoz_blago)
 
 
+graf_izvoz_blago <- ggplot(blagovni_promet %>% filter(tovor == "izvoz"),
+                          aes(x=leto, y=tone, color=tip)) + geom_line() +
+  ggtitle("Izvoz blaga")
+
+graf_uvoz_potnikov <- ggplot(potniski_promet %>% filter(tovor == 'uvoz'),
+                              aes(x=leto, y = potniki, color = tip))+ geom_line() +
+  ggtitle('Izvoz potnikov')
 
 
+graf_izvoz_potnikov <- ggplot(potniski_promet %>% filter(tovor == 'izvoz'),
+                              aes(x=leto, y = potniki, color = tip))+ geom_line() +
+  ggtitle('Izvoz potnikov')
 
 
+  
 
+
+#ZEMLJEVIDI
+
+data(World)
+evropa <- filter(World, continent == "Europe") %>% 
+  rename(Države = name)
+
+podatki <- left_join(evropski_blagovni_promet, evropa, by = c('Države')) %>% filter(Leto == '2018')
 
