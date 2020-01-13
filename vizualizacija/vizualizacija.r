@@ -10,6 +10,7 @@ library(ggpubr)
 library(digest)
 library(mosaic)
 library(maptools)
+library(readr)
 
 
 
@@ -93,15 +94,48 @@ graf_izvoz_potnikov <- ggplot(potniski_promet %>% filter(tovor == 'izvoz'),
                               aes(x=leto, y = potniki, color = tip))+ geom_line() +
   ggtitle('Izvoz potnikov')
 
-
+graf_izvoz_blago
   
 
 
 #ZEMLJEVIDI
-
+evropski_blagovni_promet_2018 <- filter(evropski_blagovni_promet, Leto == '2018')
 data(World)
+
 evropa <- filter(World, continent == "Europe") %>% 
   rename(Države = name)
 
-podatki <- left_join(evropski_blagovni_promet, evropa, by = c('Države')) %>% filter(Leto == '2018')
 
+
+source("https://raw.githubusercontent.com/jaanos/APPR-2019-20/master/lib/uvozi.zemljevid.r")
+zemljevid <- uvozi.zemljevid("http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_0_countries.zip",
+                             "ne_50m_admin_0_countries", mapa = "zemljevidi", pot.zemljevida = "", encoding = "UTF-8") %>% 
+  fortify() %>% filter(CONTINENT == "Europe" | SOVEREIGNT %in% c("Cyprus"))
+
+#colnames(zemljevid)[11] <- 'drzava'
+#zemljevid$drzava <- as.character(zemljevid$drzava)
+
+#podatki <- left_join(evropski_blagovni_promet, zemljevid$drzava, by = c('Države')) %>% filter(Leto == '2018')%>% 
+#  rename(drzave = Države)
+
+
+d <- tm_shape(zemljevid) + tm_polygons("name")
+print(d)
+
+
+source("https://raw.githubusercontent.com/jaanos/APPR-2019-20/master/lib/uvozi.zemljevid.r")
+data("World")
+svet <- tm_shape(World) + tm_polygons("HPI")
+print(svet)
+
+
+
+
+
+
+
+
+
+
+
+  

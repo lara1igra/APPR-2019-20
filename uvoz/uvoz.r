@@ -114,13 +114,10 @@ pristaniski_blagovni_promet <- read_csv2('podatki/pristaniski_blagovni_promet.cs
 
 blagovni_promet <- rbind(cestni_blagovni_promet %>% mutate(tip="cestni"),
                          pristaniski_blagovni_promet %>% mutate(tip="pristaniški"),
-                         zelezniski_blagovni_promet %>% mutate(tip='železniški'),
-                         letalski_blagovni_promet %>% mutate(tip = 'letalski'))
+                         zelezniski_blagovni_promet %>% mutate(tip='železniški'))
 
 potniski_promet <- rbind(pristaniski_potniski_promet %>% mutate(tip = 'pristaniški'),
-                         letalski_potniski_promet %>% mutate(tip= 'letalski'),
-                         zelezniski_potniski_promet %>% mutate(tip= 'zelezniski'))
-
+                         letalski_potniski_promet %>% mutate(tip= 'letalski'))
   
 # 5. tabela 
 #lin <- 'file:///C:/Users/Lara/Downloads/rail_pa_total%20(1).html'
