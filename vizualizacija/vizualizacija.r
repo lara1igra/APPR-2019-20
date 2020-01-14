@@ -99,6 +99,7 @@ graf_izvoz_blago
 
 
 #ZEMLJEVIDI
+
 evropski_blagovni_promet_2018 <- filter(evropski_blagovni_promet, Leto == '2018')
 data(World)
 
@@ -110,19 +111,22 @@ evropa <- filter(World, continent == "Europe") %>%
 source("https://raw.githubusercontent.com/jaanos/APPR-2019-20/master/lib/uvozi.zemljevid.r")
 zemljevid <- uvozi.zemljevid("http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_0_countries.zip",
                              "ne_50m_admin_0_countries", mapa = "zemljevidi", pot.zemljevida = "", encoding = "UTF-8") %>% 
-  fortify() %>% filter(CONTINENT == "Europe" | SOVEREIGNT %in% c("Cyprus"))
+  fortify() %>% filter(CONTINENT == "Europe")
+
+
 
 #colnames(zemljevid)[11] <- 'drzava'
 #zemljevid$drzava <- as.character(zemljevid$drzava)
 
-#podatki <- left_join(evropski_blagovni_promet, zemljevid$drzava, by = c('Države')) %>% filter(Leto == '2018')%>% 
-#  rename(drzave = Države)
+
+podatki <- left_join(evropski_blagovni_promet_2018, evropa, by = c('Države')) %>% 
+  rename(drzave = Države)
 
 
-d <- tm_shape(zemljevid) + tm_polygons("name")
-print(d)
+zemljevid_blagovnega_prometa <- tm_shape(podatki) + tm_polygons("Blago")
+print(zemljevid_blagovnega_prometa)
 
-
+#primer iz vaj 
 source("https://raw.githubusercontent.com/jaanos/APPR-2019-20/master/lib/uvozi.zemljevid.r")
 data("World")
 svet <- tm_shape(World) + tm_polygons("HPI")
