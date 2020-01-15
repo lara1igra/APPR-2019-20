@@ -23,9 +23,9 @@ source("lib/libraries.r", encoding="UTF-8")
 source("lib/rstudio.r", encoding="UTF-8")
 ```
 
-# Izbira teme
+# Tema 
 
-Izbrala sem si temo o transportu. Pri tem bom primerjala transport dobrin in ljudi v železniškem, pristaniški in letalski promet, pri transportu dobrin pa tudi cestni promet. Kot prvo se bom osredotočila na uvoz. Želim ugotoviti s katerim prometom pridobimo največ dobrin oziroma kako ljudje najpogosteje prihajajo v našo državo. Potem bom analizirala izvoz dobrin in ljudi, enako kot prej po panogah. Zanimalo me bo spreminjanje transporta glede na časovno obdobje med 2010 in 2018 in s tem tudi kateri transport se je z leti okrepčal. Za konec bom primerjala uvoz in izvoz, želim ugotoviti koliko je Slovenija skozi leta postala samooskrbna država. Transport z vlakom bom primerjala še z drugimi evropskimi državami od leta 2010 do 2018 in podatke prikazala z grafom. 
+Izbrala sem si temo o transportu. Pri tem bom primerjala transport dobrin in ljudi v železniškem, pristaniški in letalski promet, pri transportu dobrin pa tudi cestni promet. Kot prvo se bom osredotočila na uvoz. Želim ugotoviti s katerim prometom pridobimo največ dobrin oziroma kako ljudje najpogosteje prihajajo v našo državo. Potem bom analizirala izvoz dobrin in ljudi, enako kot prej po panogah. Za konec bom primerjala uvoz in izvoz, želim ugotoviti koliko je Slovenija skozi leta postala samooskrbna država. Transport z vlakom bom primerjala še z drugimi evropskimi državami od leta 2010 do 2018 in podatke prikazala z grafom. 
 
 
 
@@ -80,12 +80,10 @@ Tabela 5: Železniški potniški in blagovni promet v primerjavi z drugimi evrop
 
 **Opomba**: da bi razpredelnica `obcine` res bila v obliki *tidy data*, bi morali odstraniti stolpec `gostota` (saj je izpeljan iz stolpcev `povrsina` in `prebivalci`), podatke o pokrajinah pa bi morali premakniti v drugo razpredelnico, saj nekatere občine pripadajo dvema pokrajinama. Podobno bi morali narediti tudi s stolpcem `odcepitev`.
 
-Spodnji graf prikazuje porazdelitev števila naselij v občinah.
 
-```{r histogram, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
-ggplot(obcine, aes(x=naselja)) + geom_histogram() +
-  ggtitle("Pogostost števila naselij") + xlab("Število naselij") + ylab("Število občin")
-```
+**Cilj**: Želim ugotoviti kako se je spreminjal transport glede na časovno obdobje med 2010 in 2018 in s tem tudi kateri transport se je z leti okrepčal.Predvidevam, da bo največ uvoženega blaga prišlo s cestnim transportom, medtem ko ljudi z letalskim. Pri izvozu pa pričakujem podobno sliko. 
+
+
 
 ***
 
@@ -95,13 +93,51 @@ ggplot(obcine, aes(x=naselja)) + geom_histogram() +
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 ```
 
-Spodnji zemljevid prikazuje povprečno velikost družine za vsako občino.
+Spodni grafi prikazuje uvoz in izvoz blaga ter ljudi v 
+
+```{r graf_uvoz_blago, echo=FALSE, message=FALSE, fig.align='center', warning = FALSE}
+print(graf_uvoz_blago)
+```
+
+
+```{r graf_izvoz_blago, echo=FALSE, message=FALSE, fig.align='center', warning = FALSE}
+print(graf_izvoz_blago)
+```
+
+
+```{r graf_uvoz_potnikov, echo=FALSE, message=FALSE, fig.align='center', warning = FALSE}
+print(graf_uvoz_potnikov)
+```
+
+
+```{r graf_izvoz_potnikov, echo=FALSE, message=FALSE, fig.align='center', warning = FALSE}
+print(graf_izvoz_potnikov)
+```
+
+Kot je očitno pri vseh grafih močno prevladuje letalski promet. Zanimivo je da že od leta 2010, se večinoma oskrbujemo z letalskim prometom čeprav takrat še letalstvo kot samo ni bilo tako razvito. Pri izvozu potnikov pa je še posebaj očitna rast skozi leta. Zaradi modernizacije, nižanja cen letalskih kart ter večje dostopnosti v sosednje države, je ta rast pričakovana.
+
+Zaradi boljše preglednosti, sem v naslednjih grafih izuzela letalski promet. 
+
+
+
+
+Kot drugo analizo pa gledam železniški transport v drugih evropskih mestih. 
+
+Spodnja grafa predstavljata povprečen transport ljudi in blaga od leta 2010 do 2018. 
+
+```{r graf_evropa, echo=FALSE, message=FALSE, fig.align='center', warning = FALSE}
+print(graf_evropa)
+```
+
+Tako transport ljudi in blaga prevladuje Francija, ki ima daleč najvišjo povprečje. Ko pa pogledamo nižje po letvici se delajo razlike. Visok transport ljudi ima Velika Britanija in Finska, medtem ko ima transport blaga višji Norveška in Avstrija. Slovenija pri tem glede na svojo majhnost ima visoko povprečje pri transportu blaga. 
+
+
+Na spodnjem zemljevidu imam prikazane transport v železniškem prometu glede na druge evropske države. 
+
+
 
 ```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid povprečnega števila otrok v družini'}
-ggplot() + geom_polygon(data=left_join(zemljevid, povprecja, by=c("OB_UIME"="obcina")),
-                        aes(x=long, y=lat, group=group, fill=povprecje)) +
-  ggtitle("Povprečno število otrok v družini") + xlab("") + ylab("") +
-  guides(fill=guide_colorbar(title="Povprečje"))
+print(zemljevid_blagovnega_prometa)
 ```
 
 ***
@@ -112,17 +148,7 @@ ggplot() + geom_polygon(data=left_join(zemljevid, povprecja, by=c("OB_UIME"="obc
 source("analiza/analiza.r", encoding="UTF-8")
 ```
 
-Spodnji graf prikazuje povezavo med številom naselij in površino občine.
 
-```{r graf, echo=FALSE, fig.align='center', fig.cap='Povezava med številom naselij in površino občine'}
-ggplot(inner_join(obcine, data.frame(obcina=names(skupine),
-                                     skupina=factor(skupine)), by="obcina")
-, aes(x=povrsina, y=naselja, color=skupina, size=prebivalci/1000)) + geom_point() +
-  ggtitle("Število naselij glede na površino občine") +
-  xlab(expression("Površina (km"^2 * ")")) + ylab("Št. naselij") +
-  guides(color=guide_legend(title="Skupina"),
-         size=guide_legend(title="Prebivalci (* 1000)"))
-```
 
 ***
 

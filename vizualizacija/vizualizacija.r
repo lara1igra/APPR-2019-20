@@ -55,27 +55,6 @@ graf_evropa <- ggarrange(graf_evropa_blago, graf_evropa_potniki)
 # linijski grafi za UVOZ BLAGA
 
 
-#cestni_blagovni_promet_uvoz <- filter(cestni_blagovni_promet,`NOTRANJI / MEDNARODNI PREVOZ` == 'uvoz')
-
-#graf_ces_uvoz_blaga <- ggplot(data = cestni_blagovni_promet_uvoz, mapping = aes(x = cestni_blagovni_promet_uvoz$LETO, y = `Tone (1000)`)) +
-#  geom_line(stat = 'identity', col ='green') +
-#  ggtitle("Cestni promet uvoz blaga")
-
-
-#graf_zel_uvoz_blaga <- ggplot(data = zelezniski_uvoz, mapping = aes(x=zelezniski_uvoz$LETO , y=zelezniski_uvoz$`Tone (1000)`)) + 
-#  geom_line(stat = 'identity', col= 'blue') +
-#  g("Železniški promet uvoz blaga")gtitle
-
- 
-#pristaniski_blagovni_promet <- filter(pristaniski_blagovni_promet, `RAZLOŽENI IN NALOŽENI TOVOR` == 'uvoz') 
-
-#graf_pris_uvoz_blago <- ggplot(pristaniski_blagovni_promet %>% filter(tovor == "uvoz"),
-#                               aes(x=leto, y=tone))+
-#  geom_line(stat = 'identity', col ='yellow') +
-#  ggtitle("Pristaniški promet uvoz blaga")
-
-
-
 graf_uvoz_blago <- ggplot(blagovni_promet %>% filter(tovor == "uvoz"),
                           aes(x=leto, y=tone, color=tip)) + geom_line() +
   ggtitle("Uvoz blaga")
@@ -94,8 +73,7 @@ graf_izvoz_potnikov <- ggplot(potniski_promet %>% filter(tovor == 'izvoz'),
                               aes(x=leto, y = potniki, color = tip))+ geom_line() +
   ggtitle('Izvoz potnikov')
 
-graf_izvoz_blago
-  
+
 
 
 #ZEMLJEVIDI
@@ -115,22 +93,32 @@ zemljevid <- uvozi.zemljevid("http://www.naturalearthdata.com/http//www.naturale
 
 
 
-#colnames(zemljevid)[11] <- 'drzava'
-#zemljevid$drzava <- as.character(zemljevid$drzava)
+colnames(zemljevid)[11] <- 'drzava'
+zemljevid$drzava <- as.character(zemljevid$drzava)
 
 
-podatki <- left_join(evropski_blagovni_promet_2018, evropa, by = c('Države')) %>% 
-  rename(drzave = Države)
 
+podatki <- merge(evropa, evropski_blagovni_promet_2018, by="Države", all.x=TRUE) %>% 
+  rename(drzava=Države) 
+
+
+  
 
 zemljevid_blagovnega_prometa <- tm_shape(podatki) + tm_polygons("Blago")
 print(zemljevid_blagovnega_prometa)
 
+#poiskus <- ggplot() +
+#  geom_polygon(data = podatki %>% right_join(zemljevid, by = c("drzava" = "drzava")), aes(x = long, y = lat, group = group, fill = Blago, alpha = 0.8, color = "black"))+
+#  scale_fill_gradient2(low = "green", mid = "yellow", midpoint = 80) + 
+#  xlab("") + ylab("") + ggtitle("Transport blaga v železniškem prometu")+
+#  guides(fill=guide_legend(title="Povprečje")) + theme(plot.title = element_text(hjust = 0.5))
+
+
 #primer iz vaj 
-source("https://raw.githubusercontent.com/jaanos/APPR-2019-20/master/lib/uvozi.zemljevid.r")
-data("World")
-svet <- tm_shape(World) + tm_polygons("HPI")
-print(svet)
+#source("https://raw.githubusercontent.com/jaanos/APPR-2019-20/master/lib/uvozi.zemljevid.r")
+#data("World")
+#svet <- tm_shape(World) + tm_polygons("HPI")
+#print(svet)
 
 
 

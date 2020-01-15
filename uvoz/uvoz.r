@@ -112,15 +112,15 @@ pristaniski_blagovni_promet <- read_csv2('podatki/pristaniski_blagovni_promet.cs
   mutate(tovor = prevedba4[tovor]) %>%
   arrange(leto)
 
-blagovni_promet <- rbind(cestni_blagovni_promet %>% mutate(tip="cestni"),
-                         pristaniski_blagovni_promet %>% mutate(tip="pristaniški"),
-                         zelezniski_blagovni_promet %>% mutate(tip='železniški'))
-                         #,letalski_blagovni_promet %>% mutate(tip='letalski')
+blagovni_promet <- bind_rows(pristaniski_blagovni_promet %>% mutate(tip="pristaniški"),
+                         zelezniski_blagovni_promet %>% mutate(tip='železniški'),
+                         letalski_blagovni_promet %>% mutate(tip='letalski'),
+                         cestni_blagovni_promet %>% mutate(tip="cestni"))
 
 
-potniski_promet <- rbind(pristaniski_potniski_promet %>% mutate(tip = 'pristaniški'),
+potniski_promet <- bind_rows(pristaniski_potniski_promet %>% mutate(tip = 'pristaniški'),
+                             zelezniski_potniski_promet %>% mutate(tip = 'zeležniški'),
                          letalski_potniski_promet %>% mutate(tip= 'letalski'))
-                          #,zelezniski_potniski_promet %>% mutate(tip = 'zeležniški')
 # 5. tabela 
 #lin <- 'file:///C:/Users/Lara/Downloads/rail_pa_total%20(1).html'
 #stran <- html_session(lin) %>% read_html()
