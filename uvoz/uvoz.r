@@ -45,12 +45,15 @@ letalski_potniski_in_blagovni_promet <- read_csv2("podatki/letalski_potniški_in
 
 letalski_potniski_in_blagovni_promet <- letalski_potniski_in_blagovni_promet[,-c(4,5)] %>% 
   mutate(tovor = prevedba6[tovor]) %>% 
-  group_by(tovor, leto) %>% summarise(tone = sum(tone), potniki = sum(potniki))
+  group_by(tovor, leto) %>% summarise(tone = sum(tone), potniki = sum(potniki)) 
 
 letalski_potniski_promet <- letalski_potniski_in_blagovni_promet[, -c(3)] %>%
-  arrange(leto)
+  arrange(leto) 
+letalski_potniski_promet$potniki <- letalski_potniski_promet$potniki / 1000
+
 letalski_blagovni_promet <- letalski_potniski_in_blagovni_promet[, -c(4)] %>% 
   arrange(leto)
+letalski_blagovni_promet$tone <- letalski_blagovni_promet$tone /1000
  
 
   
@@ -104,13 +107,15 @@ pristaniski_potniski_promet <- read_csv2('podatki/pristaniski_potniski_promet.cs
   transmute(tovor = prevedba3[tovor],
             potniki = Potniki) %>%
   arrange(tovor)
-  
+pristaniski_potniski_promet$potniki <- pristaniski_potniski_promet$potniki /1000
 
 pristaniski_blagovni_promet <- read_csv2('podatki/pristaniski_blagovni_promet.csv',
                                          skip = 3, locale = locale(encoding="CP1250"), na = '0',
                                          col_names = c("tovor", "leto", "tone")) %>%
   mutate(tovor = prevedba4[tovor]) %>%
   arrange(leto)
+
+pristaniski_blagovni_promet$tone <- pristaniski_blagovni_promet$tone /1000
 
 blagovni_promet <- bind_rows(pristaniski_blagovni_promet %>% mutate(tip="pristaniški"),
                          zelezniski_blagovni_promet %>% mutate(tip='železniški'),
@@ -135,7 +140,9 @@ evropski_blagovni_promet <- read_csv('podatki/evropa_dobrine.csv' ,  locale=loca
   select('TIME', 'GEO', 'Value') %>% 
   rename(Leto = TIME, Države = GEO, Blago = Value )
 
-evropa_promet <- inner_join(evropski_blagovni_promet, evropski_potniski_promet) 
+
+evropa_promet <- inner_join(evropski_blagovni_promet, evropski_potniski_promet)
+#  rename('Germany' = 'Germany (until 1990 former territory of the FRG)'[Države])
 evropa_promet <- na.omit(evropa_promet)
 
 

@@ -11,6 +11,9 @@ library(digest)
 library(mosaic)
 library(maptools)
 library(readr)
+library(tmaptools)
+library(RColorBrewer)
+
 
 
 
@@ -43,7 +46,8 @@ graf_evropa_blago <- ggplot(data = povprecje_blaga, mapping = aes(x= Države, y=
   ggtitle('Povprečni transport blaga v 9 letih po državah') 
 
 graf_evropa_potniki <- ggplot(data = povprecje_potnikov, mapping = aes(x= Države, y= `povprecje potnikov`)) +
-  geom_bar(stat = 'identity', position = 'dodge') +
+  geom_bar(stat = 'identity', position = 'dodge')  +
+#  scale_fill_manual(values = c('skyblue', 'royalblue', 'blue', 'navy'))+
   theme(axis.text.x = element_text(angle = 90, size = 8)) +
   ggtitle('Povprečni transport potnikov v 9 letih po državah')
 
@@ -66,7 +70,7 @@ graf_izvoz_blago <- ggplot(blagovni_promet %>% filter(tovor == "izvoz"),
 
 graf_uvoz_potnikov <- ggplot(potniski_promet %>% filter(tovor == 'uvoz'),
                               aes(x=leto, y = potniki, color = tip))+ geom_line() +
-  ggtitle('Izvoz potnikov')
+  ggtitle('Uvoz potnikov')
 
 
 graf_izvoz_potnikov <- ggplot(potniski_promet %>% filter(tovor == 'izvoz'),
@@ -79,6 +83,7 @@ graf_izvoz_potnikov <- ggplot(potniski_promet %>% filter(tovor == 'izvoz'),
 #ZEMLJEVIDI
 
 evropski_blagovni_promet_2018 <- filter(evropski_blagovni_promet, Leto == '2018')
+evropski_potniski_promet_2018 <- filter(evropski_potniski_promet, Leto == '2018')
 data(World)
 
 evropa <- filter(World, continent == "Europe") %>% 
@@ -86,32 +91,24 @@ evropa <- filter(World, continent == "Europe") %>%
 
 
 
-source("https://raw.githubusercontent.com/jaanos/APPR-2019-20/master/lib/uvozi.zemljevid.r")
-zemljevid <- uvozi.zemljevid("http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_0_countries.zip",
-                             "ne_50m_admin_0_countries", mapa = "zemljevidi", pot.zemljevida = "", encoding = "UTF-8") %>% 
-  fortify() %>% filter(CONTINENT == "Europe")
-
-
-
-colnames(zemljevid)[11] <- 'drzava'
-zemljevid$drzava <- as.character(zemljevid$drzava)
-
-
-
 podatki <- merge(evropa, evropski_blagovni_promet_2018, by="Države", all.x=TRUE) %>% 
   rename(drzava=Države) 
+podatki2 <- merge(evropa, evropski_potniski_promet_2018, by='Države', all.x=TRUE) %>%
+  rename(drzava = Države)
 
 
-  
 
-zemljevid_blagovnega_prometa <- tm_shape(podatki) + tm_polygons("Blago")
-print(zemljevid_blagovnega_prometa)
+zemljevid_blagovnega_prometa <- tm_shape(podatki %>% set_projection("latlong"),
+                                         xlim=c(-15, 35), ylim=c(32, 72)) +
+  tm_polygons("Blago") + tm_legend(legend.position=c("left", "top"))
 
-#poiskus <- ggplot() +
-#  geom_polygon(data = podatki %>% right_join(zemljevid, by = c("drzava" = "drzava")), aes(x = long, y = lat, group = group, fill = Blago, alpha = 0.8, color = "black"))+
-#  scale_fill_gradient2(low = "green", mid = "yellow", midpoint = 80) + 
-#  xlab("") + ylab("") + ggtitle("Transport blaga v železniškem prometu")+
-#  guides(fill=guide_legend(title="Povprečje")) + theme(plot.title = element_text(hjust = 0.5))
+zemljevid_potniskega_prometa <- tm_shape(podatki2 %>% set_projection("latlong"),
+                                         xlim=c(-15, 35), ylim=c(32, 72)) +
+  tm_polygons("Potniki") + tm_legend(legend.position=c("left", "top"))
+
+
+
+
 
 
 #primer iz vaj 
