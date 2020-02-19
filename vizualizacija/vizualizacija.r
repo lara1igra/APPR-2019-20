@@ -32,6 +32,7 @@ library(RColorBrewer)
 #povprecja <- druzine %>% group_by(obcina) %>%
 #  summarise(povprecje=sum(velikost.druzine * stevilo.druzin) / sum(stevilo.druzin))
 
+
 # stolpični graf POVPREČNI TRANSPORT V 9 LETIH PO DRŽAVAH 
 
 povprecje_blaga <- evropa_promet  %>% group_by(Države) %>%
@@ -43,13 +44,14 @@ povprecje_potnikov <- evropa_promet  %>% group_by(Države) %>%
 graf_evropa_blago <- ggplot(data = povprecje_blaga, mapping = aes(x= Države, y= `povprecje blaga`)) +
   geom_bar(stat = 'identity', position = 'dodge') +
   theme(axis.text.x = element_text(angle = 90, size = 8)) +
-  ggtitle('Povprečni transport blaga v 9 letih po državah') 
+  ggtitle('Povprečni transport blaga v 9 letih po državah') +
+  ylab('Povprečje blaga')
 
 graf_evropa_potniki <- ggplot(data = povprecje_potnikov, mapping = aes(x= Države, y= `povprecje potnikov`)) +
-  geom_bar(stat = 'identity', position = 'dodge')  +
-#  scale_fill_manual(values = c('skyblue', 'royalblue', 'blue', 'navy'))+
+  geom_bar(stat = 'identity', position = 'dodge') +
   theme(axis.text.x = element_text(angle = 90, size = 8)) +
-  ggtitle('Povprečni transport potnikov v 9 letih po državah')
+  ggtitle('Povprečni transport potnikov v 9 letih po državah')+
+  ylab('Povprečje potnikov')
 
 graf_evropa <- ggarrange(graf_evropa_blago, graf_evropa_potniki) 
 

@@ -23,7 +23,8 @@ g <- ggplot(e, aes(x=letalski, y= zelezniski))+ xlim(500, 1100) + geom_point() +
               fullrange= TRUE, color = 'red') +
   geom_smooth(method = 'lm', formula = y ~ x +I(x^2),
                se = FALSE, fullrange=TRUE, color= 'green')+
-  ggtitle('Uvoz blaga letalskega prometa v odvisnosti od železniškega')
+  ggtitle('Uvoz blaga letalskega prometa v odvisnosti od železniškega')+
+  ylab('železniški')
 
 
 
@@ -38,7 +39,8 @@ g2 <- ggplot(e2, aes(x=letalski, y= zelezniski))+ xlim(3000, 9000) + geom_point(
               fullrange= TRUE, color = 'red') +
   geom_smooth(method = 'lm', formula = y ~ x +I(x^2),
               se = FALSE, fullrange=TRUE, color= 'blue')+
-  ggtitle('Uvoz potnikov letalskega prometa v odvisnosti od železniškega')
+  ggtitle('Uvoz potnikov letalskega prometa v odvisnosti od železniškega')+
+  ylab('železniški')
 
 
 
