@@ -101,6 +101,7 @@ print(graf_uvoz_blago)
 ```{r graf_izvoz_blago, echo=FALSE, message=FALSE, fig.align='center', warning = FALSE}
 print(graf_izvoz_blago)
 ```
+
 Največji transport blaga je v cestnem prometu. Predvidevamo da zaradi tega, ker je cestni promet najbolj prilagodljiv naravnim razmeram, je neodvisen in zaseben uporabnikom ter predvsem omogoča hitro dostavo blaga. Kar pomeni da je blago do končnega uporabnika pripeljan najbolj optimalno. 
 Veliko vlogo pri transportu pa ima tudi železniški promet. Ima kar veliko prednosti. Na primer prepeljemo lahko veliko količino blaga nenkrat, zaradi zastojev na cesti in nepredvidljivih razmer je ponavadi tudi hitrejši in varnejši, vendar ima eno veliko pomankljivost in to je dostopnost. V Sloveniji imamo 33 krat manj železniških omrežji kot v cestnem prometu, iz katerega sledi da je železniški promet v slabem izkoristku. 
 Če pogledamo še pristaniški in letalski promet, pa so številke veliko manjše. Glede na to, da imamo tako pristanišče kot letališče samo eno in v primerjavi z ostalimi evropskimi državami veliko manjše so take razlike pričakovane. 
@@ -114,6 +115,7 @@ print(graf_uvoz_potnikov)
 print(graf_izvoz_potnikov)
 ```
 
+
 Vodilno vlogo pri transportu potnikov ima letalski promet. V zadnjih letih se je njegov pomen zelo povečal. Letalske karte postajajo vse bolj poceni, dostopnost v druge države je enostavnejša, hitrejša, zaradi interneta je iskanje nastanitev priročno in poceni, in zato se ljudje vse več odločajo za potovanje okoli sveta. 
 Glede na to da podatkov za uvoz in izvoz ljudi za cestni promet nimam, predvidevam da je bil v preteklih letih nad letalskim prometom. Vendar ker potovanje z avtom postaja dražje in predvsem bolj zamudno, mislim da se bo ta trend v prihodnjih letih spremenil. 
 
@@ -124,9 +126,10 @@ Kot drugo analizo pa primerjam železniški transport z drugimi Evropskimi drža
 
 Spodnja grafa prikazujeta povprečen transport ljudi in blaga od leta 2010 do 2018. 
 
-```{r graf_evropa, echo=FALSE, message=FALSE, fig.align='center', warning = FALSE}
+```{r graf_evropa,c, message=FALSE, fig.align='center', warning = FALSE, message=FALSE}
 print(graf_evropa)
 ```
+
 
 Iz grafov opazimo da ima največje povprečje Francija. Ko pa pogledamo nižje po letvici se delajo razlike. Visok transport ljudi ima Velika Britanija in Finska, medtem ko ima transport blaga višji Norveška in Avstrija. Slovenija je pri tem seveda bolj na dnu, saj se tako po velikosti kot številu prebivalcev ne mora primerjati z večjimi Evropskimi državami.  
 
@@ -135,11 +138,11 @@ Na spodnjem zemljevidu imam prikazane transport v železniškem prometu glede na
 
 
 
-```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid blagovnega prometa v letu 2018'}
+```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid blagovnega prometa v letu 2018', massage=FALSE, echo=FALSE, warning=FALSE}
 print(zemljevid_blagovnega_prometa)
 ```
 
-```{r zemljevid2, echo=FALSE, fig.align='center', fig.cap='Zemljevid potniskega prometa v letu 2018'}
+```{r zemljevid2, echo=FALSE, fig.align='center', fig.cap='Zemljevid potniskega prometa v letu 2018',  echo=FALSE, massage=FALSE, warning=FALSE}
 print(zemljevid_potniskega_prometa)
 ```
 
@@ -148,9 +151,10 @@ print(zemljevid_potniskega_prometa)
 
 # Napredna analiza podatkov
 
-```{r analiza, echo=FALSE, message=FALSE}
+```{r analiza, echo=FALSE, message=FALSE, warning=FALSE}
 source("analiza/analiza.r", encoding="UTF-8")
 ```
+
 Za napredno analizo sem naredila napoved cestnega transporta za Slovenijo. 
 
 ```{r graf_regresije_uvoz, echo=FALSE, message=FALSE, warning=FALSE}
@@ -174,6 +178,7 @@ print(g)
 ```{r g2, echo=FALSE, message=FALSE, warning=FALSE}
 print(g2)
 ```
+
 V obeh primerih gledamo uvoz. Pri uvozu blaga je večanje letalskega transporta, povečalo tudi transport v železniškem prometu, vendar le do določeno količino tovora. Kot vidimo pri 900 (900000 ton) se krivulja začne obračat navzdol. 
 Pri uvozu potnikov pa je zgodba rano nasprotna. Povečanje letalskega prometa manjša železniški promet. Kar je logično, saj je letalski promet v večini lažje dostopen in včasih na daljše razdalje tudi hitrejši. 
 
