@@ -122,10 +122,15 @@ blagovni_promet <- bind_rows(pristaniski_blagovni_promet %>% mutate(tip="pristan
                          letalski_blagovni_promet %>% mutate(tip='letalski'),
                          cestni_blagovni_promet %>% mutate(tip="cestni"))
 
+blagovni_promet$tone <- blagovni_promet$tone / 1000
+
 
 potniski_promet <- bind_rows(pristaniski_potniski_promet %>% mutate(tip = 'pristaniški'),
                              zelezniski_potniski_promet %>% mutate(tip = 'zeležniški'),
                          letalski_potniski_promet %>% mutate(tip= 'letalski'))
+
+potniski_promet$potniki <- potniski_promet$potniki / 1000
+
 # 5. tabela 
 #lin <- 'file:///C:/Users/Lara/Downloads/rail_pa_total%20(1).html'
 #stran <- html_session(lin) %>% read_html()

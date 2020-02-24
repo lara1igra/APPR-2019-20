@@ -75,7 +75,7 @@ Tabela 5: Železniški potniški in blagovni promet v primerjavi z drugimi Evrop
   - `blago` - meritev: količina blaga v tona (stevilo),
   - `potniki` - meritev: število potnikov v 1000 (število),
   
-  
+ 
 
 
 
@@ -126,7 +126,7 @@ Kot drugo analizo pa primerjam železniški transport z drugimi Evropskimi drža
 
 Spodnja grafa prikazujeta povprečen transport ljudi in blaga od leta 2010 do 2018. 
 
-```{r graf_evropa,c, message=FALSE, fig.align='center', warning = FALSE, message=FALSE}
+```{r graf_evropa,c, message=FALSE, fig.align='center', warning = FALSE, echo=FALSE, message=FALSE}
 print(graf_evropa)
 ```
 
@@ -138,11 +138,11 @@ Na spodnjem zemljevidu imam prikazane transport v železniškem prometu glede na
 
 
 
-```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid blagovnega prometa v letu 2018', massage=FALSE, echo=FALSE, warning=FALSE}
+```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid blagovnega prometa v letu 2018', message=FALSE, warning=FALSE}
 print(zemljevid_blagovnega_prometa)
 ```
 
-```{r zemljevid2, echo=FALSE, fig.align='center', fig.cap='Zemljevid potniskega prometa v letu 2018',  echo=FALSE, massage=FALSE, warning=FALSE}
+```{r zemljevid2, echo=FALSE, fig.align='center', fig.cap='Zemljevid potniskega prometa v letu 2018', message=FALSE, warning=FALSE}
 print(zemljevid_potniskega_prometa)
 ```
 

@@ -13,6 +13,7 @@ library(maptools)
 library(readr)
 library(tmaptools)
 library(RColorBrewer)
+library(scales)
 
 
 
@@ -43,13 +44,13 @@ povprecje_potnikov <- evropa_promet  %>% group_by(Države) %>%
 
 graf_evropa_blago <- ggplot(data = povprecje_blaga, mapping = aes(x= Države, y= `povprecje blaga`)) +
   geom_bar(stat = 'identity', position = 'dodge') +
-  theme(axis.text.x = element_text(angle = 90, size = 8)) +
+  theme(axis.text.x = element_text(angle = 90, size = 8, hjust = 1)) +
   ggtitle('Povprečni transport blaga v 9 letih po državah') +
   ylab('Povprečje blaga')
 
 graf_evropa_potniki <- ggplot(data = povprecje_potnikov, mapping = aes(x= Države, y= `povprecje potnikov`)) +
   geom_bar(stat = 'identity', position = 'dodge') +
-  theme(axis.text.x = element_text(angle = 90, size = 8)) +
+  theme(axis.text.x = element_text(angle = 90, size = 8,hjust = 1)) +
   ggtitle('Povprečni transport potnikov v 9 letih po državah')+
   ylab('Povprečje potnikov')
 
@@ -58,26 +59,35 @@ graf_evropa <- ggarrange(graf_evropa_blago, graf_evropa_potniki)
 
 
 
-# linijski grafi za UVOZ BLAGA
+# linijski grafi za uvoz in izvoz blaga in potnikov 
 
 
 graf_uvoz_blago <- ggplot(blagovni_promet %>% filter(tovor == "uvoz"),
                           aes(x=leto, y=tone, color=tip)) + geom_line() +
-  ggtitle("Uvoz blaga")
+  ggtitle("Uvoz blaga")+
+  ylab('tone (1000)')+
+  xlab('leto')
+   
 
 
 graf_izvoz_blago <- ggplot(blagovni_promet %>% filter(tovor == "izvoz"),
                           aes(x=leto, y=tone, color=tip)) + geom_line() +
-  ggtitle("Izvoz blaga")
+  ggtitle("Izvoz blaga")+
+  ylab('tone (1000)')+
+  xlab('leto')
 
 graf_uvoz_potnikov <- ggplot(potniski_promet %>% filter(tovor == 'uvoz'),
                               aes(x=leto, y = potniki, color = tip))+ geom_line() +
-  ggtitle('Uvoz potnikov')
+  ggtitle('Uvoz potnikov') +
+  ylab('potniki (1000)')+
+  xlab('leto')
 
 
 graf_izvoz_potnikov <- ggplot(potniski_promet %>% filter(tovor == 'izvoz'),
                               aes(x=leto, y = potniki, color = tip))+ geom_line() +
-  ggtitle('Izvoz potnikov')
+  ggtitle('Izvoz potnikov') +
+  ylab('potniki (1000)')+
+  xlab('leto')
 
 
 

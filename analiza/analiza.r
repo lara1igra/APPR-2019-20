@@ -47,6 +47,7 @@ g2 <- ggplot(e2, aes(x=letalski, y= zelezniski))+ xlim(3000, 9000) + geom_point(
 
 #napoved kako se bo spreminjal cestni blagovni promet uvoz
 
+cestni_blagovni_promet$tone <- cestni_blagovni_promet$tone / 1000
 cuvoz <- cestni_blagovni_promet %>%  filter(tovor == 'uvoz') %>% rename(cestni = tone)
 prilagajanje <- lm(data = cuvoz, cestni~I(leto^2) +leto + 0)
 gg <- data.frame(leto = seq(2010, 2020, 1))
@@ -56,6 +57,7 @@ napoved <- mutate(gg, cestni=predict(prilagajanje, gg))
 graf_regresije_uvoz <- ggplot(cuvoz, aes(x=leto, y=cestni))+
   geom_point() + geom_smooth(method = lm, formula =y~ x + I(x^2), fullrange = TRUE, color = 'blue')+
   geom_point(data = napoved, aes(x= leto, y=cestni), color='red', size = 2) +
+  scale_x_continuous(breaks=seq(2010, 2020, 2)) +
   ggtitle('Napoved rasti uvoza cestnega blagovnega prometa v Sloveniji')+
   ylab('cestni promet v tonah (1000)')
 
@@ -74,6 +76,7 @@ napoved2 <- mutate(gg2, cestni=predict(prilagajanje2, gg2))
 graf_regresije_izvoz <- ggplot(cizvoz, aes(x=leto, y=cestni))+
   geom_point() + geom_smooth(method = lm, formula =y~ x + I(x^2), fullrange = TRUE, color = 'green')+
   geom_point(data = napoved2, aes(x= leto, y=cestni), color='red', size = 2) +
+  scale_x_continuous(breaks=seq(2010, 2020, 2))+
   ggtitle('Napoved rasti izvoza cestnega blagovnega prometa v Sloveniji')+
   ylab('cestni promet v tonah (1000)')
 
